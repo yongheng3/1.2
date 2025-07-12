@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贝壳新房搏学考试系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f0f8ff 0%, #e6f7ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(13, 71, 161, 0.15);
+            overflow: hidden;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        header {
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+        
+        .header-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjA1KSIgLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjcGF0dGVybikiIC8+PC9zdmc+');
+            opacity: 0.3;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 2;
+        }
+        
+        .logo-icon {
+            background: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-icon i {
+            color: #0d47a1;
+            font-size: 28px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .logo-text p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 2;
+        }
+        
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .login-section, .exam-section, .result-section {
+            display: none;
+        }
+        
+        .active {
+            display: block;
+        }
+        
+        .login-form {
+            max-width: 480px;
+            margin: 30px auto;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(13, 71, 161, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+        }
+        
+        .login-form h2 {
+            text-align: center;
+            color: #0d47a1;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #37474f;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-group label i {
+            color: #1e88e5;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #90a4ae;
+            font-size: 18px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-group input:focus {
+            border-color: #1e88e5;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(30, 136, 229, 0.15);
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::after {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(30, 136, 229, 0.4);
+        }
+        
+        .demo-account {
+            text-align: center;
+            margin-top: 25px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+        /* 免责声明样式 */
+.disclaimer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff8e1;
+    border-radius: 10px;
+    font-size: 13px;
+    color: #5d4037;
+    border-left: 4px solid #ffc107;
+}
+
+.disclaimer i {
+    color: #ff9800;
+    margin-right: 5px;
+}
+        
+        .demo-account strong {
+            color: #0d47a1;
+            font-weight: 600;
+        }
+        
+        .exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e3f2fd;
+        }
+        
+        .exam-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .exam-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0d47a1;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            flex-grow: 1;
+            max-width: 300px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+        
+        .timer {
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            color: white;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+        }
+        
+        .question-container {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(30, 136, 229, 0.08);
+            border: 1px solid #e3f2fd;
+            position: relative;
+        }
+        
+        .question-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .question-number {
+            background: linear-gradient(135deg, #1e88e5 0%, #0d47a1 100%);
+            color: white;
+            min-width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 15px;
+            box-shadow: 0 4px 8px rgba(30, 136, 229, 0.2);
+        }
+        
+        .question-text {
+            font-size: 19px;
+            font-weight: 600;
+            color: #263238;
+            line-height: 1.6;
+            flex: 1;
+        }
+        
+        .options {
+            padding-left: 55px;
+        }
+        
+        .option {
+            margin: 15px 0;
+            padding: 16px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            background-color: #f0f7ff;
+            border-color: #90caf9;
+            transform: translateX(5px);
+        }
+        
+        .option.selected {
+            background-color: #e3f2fd;
+            border-color: #1e88e5;
+            box-shadow: 0 4px 10px rgba(30, 136, 229, 0.15);
+        }
+        
+        .option input {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-btn {
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .prev-btn {
+            background-color: #f5f5f5;
+            color: #424242;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .prev-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .next-btn {
+            background: linear-gradient(90deg, #1e88e5 0%, #0d47a1 100%);
+            color: white;
+            border: none;
+        }
+        
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(30, 136, 229, 0.4);
+        }
+        
+        .submit-btn {
+            display: block;
+            margin: 40px auto;
+            padding: 16px 50px;
+            background: linear-gradient(90deg, #43a047 0%, #2e7d32 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 15px rgba(67, 160, 71, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(67, 160, 71, 0.4);
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            background: conic-gradient(#4caf50 0% 70%, #ff9800 70% 85%, #f44336 85% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .score-inner {
+            width: 160px;
+            height: 160px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .score-value {
+            font-size: 48px;
+            color: #1e88e5;
+            font-weight: 800;
+            line-height: 1;
+        }
+        
+        .score-text {
+            font-size: 18px;
+            color: #757575;
+            margin-top: 5px;
+        }
+        
+        .result-details {
+            margin-top: 30px;
+        }
+        
+        .result-title {
+            font-size: 28px;
+            color: #0d47a1;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .result-subtitle {
+            color: #546e7a;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+        
+        .detail-cards {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .detail-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            min-width: 220px;
+            box-shadow: 0 8px 25px rgba(30, 136, 229, 0.1);
+            border: 1px solid #e3f2fd;
+            transition: all 0.3s;
+        }
+        
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(30, 136, 229, 0.15);
+        }
+        
+        .detail-card h3 {
+            color: #0d47a1;
+            margin-bottom: 15px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .detail-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #1e88e5;
+            line-height: 1.2;
+        }
+        
+        .detail-label {
+            font-size: 15px;
+            color: #78909c;
+            margin-top: 5px;
+        }
+        
+        .wrong-questions {
+            margin-top: 50px;
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .section-title {
+            color: #0d47a1;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .wrong-question-item {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 18px rgba(244, 67, 54, 0.08);
+            border: 1px solid #ffebee;
+            position: relative;
+        }
+        
+        .wrong-question-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, #f44336, #e91e63);
+            border-radius: 5px 0 0 5px;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #263238;
+        }
+        
+        .user-answer {
+            color: #f44336;
+            margin: 8px 0;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .correct-answer {
+            color: #4caf50;
+            font-weight: 600;
+            margin: 8px 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .explanation {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 15px;
+            border-left: 4px solid #1e88e5;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .explanation strong {
+            color: #0d47a1;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #546e7a;
+            font-size: 15px;
+            border-top: 1px solid #e3f2fd;
+            background: #f8f9fa;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .login-form {
+                padding: 30px 20px;
+            }
+            
+            .exam-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .exam-info {
+                width: 100%;
+            }
+            
+            .progress-bar {
+                max-width: 100%;
+            }
+            
+            .question-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .question-number {
+                margin-bottom: 15px;
+            }
+            
+            .options {
+                padding-left: 0;
+            }
+            
+            .detail-cards {
+                gap: 15px;
+            }
+            
+            .detail-card {
+                min-width: 100%;
+            }
+        }
+        
+        /* 使用帮助 */
+        .help-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .help-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .close-help {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #757575;
+        }
+        
+        .help-steps {
+            margin: 20px 0;
+        }
+        
+        .help-step {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background: #1e88e5;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+        
+        /* 新增系统信息卡片 */
+        .system-info {
+            background: linear-gradient(135deg, #0d47a1 0%, #1e88e5 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin: 25px auto;
+            max-width: 800px;
+            box-shadow: 0 8px 25px rgba(13, 71, 161, 0.2);
+            text-align: center;
+        }
+        
+        .system-info h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .info-card i {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #ffd54f;
+        }
+        
+        .info-card h4 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .info-card p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-overlay"></div>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>贝壳新房搏学考试系统</h1>
+                    <p>第1届新房搏学考试辅导教材</p>
+                </div>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div id="userName">未登录</div>
+            </div>
+        </header>
+        
+        <div class="content">
+            <!-- 系统信息卡片 -->
+            <div class="system-info" id="systemInfo">
+                <h3><i class="fas fa-info-circle"></i> 系统使用说明</h3>
+                <p>欢迎使用贝壳新房搏学考试系统，请使用演示账号登录开始模拟考试</p>
+                
+                <div class="info-grid">
+                    <div class="info-card">
+                        <i class="fas fa-book"></i>
+                        <h4>全面题库</h4>
+                        <p>精选160+道考试题目</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-clock"></i>
+                        <h4>限时考试</h4>
+                        <p>60分钟完成考试</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-chart-bar"></i>
+                        <h4>成绩分析</h4>
+                        <p>详细考试结果分析</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-redo"></i>
+                        <h4>多次练习</h4>
+                        <p>支持重新考试</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 登录界面 -->
+            <div class="login-section active" id="loginSection">
+                <div class="login-form">
+                    <h2><i class="fas fa-key"></i> 用户登录</h2>
+                    <div class="form-group">
+                        <label for="username"><i class="fas fa-user"></i> 用户名</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user-circle"></i>
+                            <input type="text" id="username" placeholder="请输入用户名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><i class="fas fa-lock"></i> 密码</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-key"></i>
+                            <input type="password" id="password" placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <button class="btn" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i> 登录系统
+                    </button>
+                    
+                    <div class="demo-account">
+                        <p>演示账号: <strong>syh</strong> / 密码: <strong>123</strong></p>
+                        <p style="margin-top: 8px; color: #0d47a1; font-weight: 500;">
+                            <i class="fas fa-lightbulb"></i> 登录后可开始模拟考试
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="disclaimer">
+                <p><i class="fas fa-exclamation-triangle"></i> 免责声明：本考试系统由孙永恒免费提供培训使用，题目及答案来源于《第1届新房搏学考试辅导教材》。系统内所有内容仅供学习参考，不构成任何业务建议。使用本系统即表示您同意仅用于个人学习目的。</p>
+            </div>
+            
+            <!-- 考试界面 -->
+            <div class="exam-section" id="examSection">
+                <div class="exam-header">
+                    <div class="exam-info">
+                        <div class="exam-title">
+                            <i class="fas fa-book-open"></i> 第1届新房搏学考试
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="progressBar" style="width: 10%"></div>
+                        </div>
+                    </div>
+                    <div class="timer" id="timer">
+                        <i class="fas fa-clock"></i> 剩余时间: 60:00
+                    </div>
+                </div>
+                
+                <div id="questionArea">
+                    <!-- 题目将动态生成在这里 -->
+                </div>
+                
+                <button class="submit-btn" id="submitBtn">
+                    <i class="fas fa-paper-plane"></i> 提交试卷
+                </button>
+            </div>
+            
+            <!-- 成绩界面 -->
+            <div class="result-section" id="resultSection">
+                <div class="result-container">
+                    <div class="score-circle">
+                        <div class="score-inner">
+                            <div class="score-value" id="scoreValue">0</div>
+                            <div class="score-text">得分</div>
+                        </div>
+                    </div>
+                    
+                    <h2 class="result-title">考试成绩报告</h2>
+                    <p class="result-subtitle">
+                        恭喜您完成贝壳新房搏学考试！以下是您的考试成绩和详细分析报告
+                    </p>
+                    
+                    <div class="result-details">
+                        <div class="detail-cards">
+                            <div class="detail-card">
+                                <h3><i class="fas fa-file-alt"></i> 答题数</h3>
+                                <div class="detail-value" id="totalQuestions">0</div>
+                                <div class="detail-label">总题数</div>
+                            </div>
+                            <div class="detail-card">
+                                <h3><i class="fas fa-check-circle"></i> 正确数</h3>
+                                <div class="detail-value" id="correctCount">0</div>
+                                <div class="detail-label">答对题目</div>
+                            </div>
+                            <div class="detail-card">
+                                <h3><i class="fas fa-times-circle"></i> 错误数</h3>
+                                <div class="detail-value" id="wrongCount">0</div>
+                                <div class="detail-label">答错题目</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="wrong-questions">
+                        <h2 class="section-title">
+                            <i class="fas fa-exclamation-triangle"></i> 错题解析
+                        </h2>
+                        <div id="wrongQuestionsList">
+                            <!-- 错题将动态生成在这里 -->
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="retryBtn" style="margin-top: 30px; width: auto; padding: 14px 40px;">
+                        <i class="fas fa-redo"></i> 重新考试
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>贝壳找房 &copy; 2025 第1届新房搏学考试辅导教材</p>
+            <p style="margin-top: 8px;">科技驱动的一站式新居住服务平台</p>
+        </footer>
+    </div>
+    
+    <!-- 使用帮助弹窗 -->
+    <div class="help-modal" id="helpModal">
+        <div class="help-content">
+            <span class="close-help" id="closeHelp">&times;</span>
+            <h2><i class="fas fa-question-circle"></i> 使用指南</h2>
+            
+            <div class="help-steps">
+                <div class="help-step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h3>登录系统</h3>
+                        <p>使用演示账号: syh / 123 登录系统</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h3>开始考试</h3>
+                        <p>登录后自动进入考试界面开始答题</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h3>答题规则</h3>
+                        <p>考试包含单选、多选和判断题，总时长60分钟</p>
+                    </div>
+                </div>
+                
+                <div class="help-step">
+                    <div class="step-number">4</div>
+                    <div>
+                        <h3>查看结果</h3>
+                        <p>提交试卷后查看详细成绩和错题解析</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 题库数据
+        const questionBank = [
+            {
+                id: 1,
+                type: 'single',
+                question: '贝壳的使命是什么？',
+                options: [
+                    'A. 有尊严的服务者，更美好的居住',
+                    'B. 让家更美好',
+                    'C. 服务3亿家庭的品质居住平台',
+                    'D. 做难而正确的事'
+                ],
+                answer: 'A',
+                explanation: '根据教材P11，贝壳的使命是"有尊严的服务者，更美好的居住"。'
+            },
+            {
+                id: 2,
+                type: 'multi',
+                question: '贝壳的核心价值观包括哪些？',
+                options: [
+                    'A. 客户至上',
+                    'B. 诚实可信',
+                    'C. 合作共赢',
+                    'D. 拼搏进取',
+                    'E. 品质正循环'
+                ],
+                answer: ['A', 'B', 'C', 'D'],
+                explanation: '根据教材P11，贝壳的核心价值观包括：客户至上、诚实可信、合作共赢、拼搏进取。'
+            },
+            {
+                id: 3,
+                type: 'judge',
+                question: '格林互助的保障对象包括员工本人、配偶、子女、父母及配偶的父母。',
+                answer: true,
+                explanation: '根据教材P13，格林互助的保障对象包括本人、配偶、子女、父母及配偶的父母。'
+            },
+            {
+                id: 4,
+                type: 'single',
+                question: '房地产行业按交易客体的存续时间可分为？',
+                options: [
+                    'A. 土地市场和商品房市场',
+                    'B. 销售市场和租赁市场',
+                    'C. 增量市场和存量市场',
+                    'D. 一级市场和二级市场'
+                ],
+                answer: 'C',
+                explanation: '根据教材P20，房地产市场按交易客体的存续时间可分为增量市场和存量市场。'
+            },
+            {
+                id: 5,
+                type: 'single',
+                question: '商品房预售应具备的条件中，以下哪项不属于"五证"？',
+                options: [
+                    'A. 国有土地使用证',
+                    'B. 建设工程规划许可证',
+                    'C. 商品房预售许可证',
+                    'D. 施工进度许可证'
+                ],
+                answer: 'D',
+                explanation: '根据教材P25，商品房预售应具备"五证"包括：国有土地使用证、建设用地规划许可证、建设工程规划许可证、建筑工程施工许可证、商品房预售许可证。'
+            },
+            {
+                id: 6,
+                type: 'multi',
+                question: '贝壳新房业务流程主要包括哪些阶段？',
+                options: [
+                    'A. 拓盘',
+                    'B. 打盘',
+                    'C. 回款结佣',
+                    'D. 客户开发',
+                    'E. 广告投放'
+                ],
+                answer: ['A', 'B', 'C'],
+                explanation: '根据教材P34，新房业务主要分为拓盘、打盘、回款结佣三个阶段。'
+            },
+            {
+                id: 7,
+                type: 'single',
+                question: '新房行指（行业指数）的计算公式是？',
+                options: [
+                    'A. 贝壳月度财务成销套数/城市新房市场月度网签总套数',
+                    'B. 新房成交金额/城市总成交金额',
+                    'C. 贝壳新房销售额/开发商总销售额',
+                    'D. 渠道带看量/总带看量'
+                ],
+                answer: 'A',
+                explanation: '根据教材P77，月度新房行业指数（成销行指）=贝壳月度财务成销套数/城市新房市场月度网签总套数。'
+            },
+            {
+                id: 8,
+                type: 'judge',
+                question: '梯户比是指电梯数和每层楼住户数的比例，表达为"几梯几户"。',
+                answer: true,
+                explanation: '根据教材P30，梯户比是电梯数和每层楼住户数的比例，表达为"几梯几户"。'
+            },
+            {
+                id: 9,
+                type: 'single',
+                question: '下列哪项不属于贝壳"新房十不准"中对消费者的要求？',
+                options: [
+                    'A. 不准对消费者提供虚假信息',
+                    'B. 不准向消费者建议加杠杆金融产品',
+                    'C. 不准经手/侵占/挪用消费者资金',
+                    'D. 不准向消费者赠送礼品'
+                ],
+                answer: 'D',
+                explanation: '根据教材P17-18，贝壳员工新房十不准中对消费者的要求包括：不准提供虚假信息、不准建议加杠杆金融产品、不准经手消费者资金。'
+            },
+            {
+                id: 10,
+                type: 'multi',
+                question: '贝壳新房业务优势包括哪些？',
+                options: [
+                    'A. 平台模式优势',
+                    'B. 资源整合优势',
+                    'C. 营销服一体化运营优势',
+                    'D. 价格最低优势',
+                    'E. 独家房源优势'
+                ],
+                answer: ['A', 'B', 'C'],
+                explanation: '根据教材P35，贝壳新房业务优势包括：平台模式优势、资源整合优势、营销服一体化运营优势。'
+            },
+            {
+                id: 11,
+                type: 'single',
+                question: '2023年贝壳将战略升级为？',
+                options: [
+                    'A. 一体两翼',
+                    'B. 一体三翼',
+                    'C. 双轮驱动',
+                    'D. 平台+生态'
+                ],
+                answer: 'B',
+                explanation: '根据教材P33，2023年贝壳将战略升级为"一体三翼"。'
+            },
+            {
+                id: 12,
+                type: 'judge',
+                question: '现房销售需要提供《商品房预售许可证》。',
+                answer: false,
+                explanation: '根据教材P25，现房销售需要提供《商品房销售许可证》，预售房才需要提供《商品房预售许可证》。'
+            },
+            {
+                id: 13,
+                type: 'single',
+                question: '贝壳的使命是什么？',
+                options: [
+                    'A. 有尊严的服务者，更美好的居住',
+                    'B. 让家更美好',
+                    'C. 服务3亿家庭的品质居住平台',
+                    'D. 做难而正确的事'
+                ],
+                answer: 'A',
+                explanation: '根据教材P11，贝壳的使命是"有尊严的服务者，更美好的居住"。'
+            },
+            {
+        id: 14,
+        type: 'single',
+        question: '链家成立初期（2001-2004年）的核心竞争策略是什么？',
+        options: [
+            'A. 低价佣金策略',
+            'B. 快速扩张门店',
+            'C. 诚实不骗人',
+            'D. 独家房源垄断'
+        ],
+        answer: 'C',
+        explanation: '教材P1明确提到：成立初期的链家坚持"诚实就是我们的竞争策略，不骗人就是竞争力"'
+    },
+    {
+        id: 15,
+        type: 'multi',
+        question: '链家在"深耕北京"阶段（2005-2007）取得成功的关键因素包括：',
+        options: [
+            'A. 分区裂变模式',
+            'B. 刚性管理制度',
+            'C. 高佣金策略',
+            'D. 追求卓越的文化'
+        ],
+        answer: ['A', 'B', 'D'],
+        explanation: '教材P1-2指出成功因素包括：分区裂变、刚性管理、追求卓越追求赢'
+    },
+    {
+        id: 16,
+        type: 'judge',
+        question: '链家于2011年推出的"博学考试"目的是通过考试促进经纪人专业能力提升。',
+        answer: true,
+        explanation: '教材P3明确说明：2011年链家推出"以考促学"的博学考试来提升专业能力'
+    },
+    {
+        id: 17,
+        type: 'single',
+        question: '贝壳将每年的哪一天定为"客户日"？',
+        options: [
+            'A. 1月1日',
+            'B. 2月23日',
+            'C. 5月1日',
+            'D. 11月12日'
+        ],
+        answer: 'B',
+        explanation: '教材P4记载：2016年2月23日的客户投诉事件后，贝壳将每年2月23日定为客户日'
+    },
+    {
+        id: 18,
+        type: 'multi',
+        question: '贝壳"守文化"针对门店侧的"1+5个2"战略体系包含哪些要素？',
+        options: [
+            'A. 区域共治理事务',
+            'B. 门店积分制',
+            'C. 店东工作台',
+            'D. 精英社竞赛'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P4-6完整列出"1+5个2"体系：1个组织+2机制+2公示+2承诺+2产品+2竞赛'
+    },
+    {
+        id: 19,
+        type: 'single',
+        question: '门店积分制的核心业务逻辑是什么？',
+        options: [
+            'A. 积分决定收入，收入决定星级',
+            'B. 收入决定积分，积分决定星级',
+            'C. 星级决定积分，积分决定收入',
+            'D. 规模决定积分，积分决定收入'
+        ],
+        answer: 'B',
+        explanation: '教材P5明确指出："收入决定积分，积分决定星级，星级和积分共同决定权益"'
+    },
+    {
+        id: 20,
+        type: 'judge',
+        question: '贝壳2024年推出的"标准都做到，房款平台保"承诺要求经纪人严格规范作业。',
+        answer: true,
+        explanation: '教材P5风险兜底承诺条款：经纪人严格规范作业是获得平台资金保障的前提条件'
+    },
+    {
+        id: 21,
+        type: 'single',
+        question: '店东看懂账主要解决店东的什么痛点？',
+        options: [
+            'A. 房源获取困难',
+            'B. 交易后对账困难',
+            'C. 人员招聘困难',
+            'D. 客户投诉处理'
+        ],
+        answer: 'B',
+        explanation: '教材P5明确说明：针对"找不到、对不上、看不懂"等交易后财务痛点'
+    },
+    {
+        id: 22,
+        type: 'multi',
+        question: '贝壳城市的促增长主要包括哪些方向？',
+        options: [
+            'A. 行指增长',
+            'B. 规模增长',
+            'C. 广告投入增长',
+            'D. 新赛道增长'
+        ],
+        answer: ['A', 'B', 'D'],
+        explanation: '教材P5-6指出促增长的四个方向：行指增长、规模增长、效率增长和新赛道增长'
+    },
+    {
+        id: 23,
+        type: 'single',
+        question: '2023年贝壳战略升级后的结构是？',
+        options: [
+            'A. 一体两翼',
+            'B. 一体三翼',
+            'C. 双轮驱动',
+            'D. 平台+生态'
+        ],
+        answer: 'B',
+        explanation: '教材P4明确：2023年贝壳将战略升级为"一体三翼"'
+    },
+    {
+        id: 24,
+        type: 'judge',
+        question: '贝壳整装业务包含圣都整装和被窝整装两大品牌。',
+        answer: true,
+        explanation: '教材P6说明：整装品牌包含圣都整装（全国）和被窝整装（北京）'
+    },
+    {
+        id: 25,
+        type: 'single',
+        question: '链家首次成为北京市场第一的时间是？',
+        options: [
+            'A. 2005年',
+            'B. 2007年',
+            'C. 2010年',
+            'D. 2013年'
+        ],
+        answer: 'B',
+        explanation: '教材P1：链家在2007年成为北京市市场第一'
+    },
+    {
+        id: 26,
+        type: 'multi',
+        question: '透明交易包含哪些具体措施？',
+        options: [
+            'A. 实体报盘',
+            'B. 签三方约',
+            'C. 不吃差价',
+            'D. 快速成交'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P1：透明交易即"实体报盘、签三方约、不吃差价"三要素'
+    },
+    {
+        id: 27,
+        type: 'single',
+        question: '链家推行真房源后，委托量短期下降幅度约为？',
+        options: [
+            'A. 5%',
+            'B. 15%',
+            'C. 30%',
+            'D. 50%'
+        ],
+        answer: 'C',
+        explanation: '教材P3：推行真房源的前3个月，链家的委托量下降了30%左右'
+    },
+    {
+        id: 28,
+        type: 'judge',
+        question: '楼盘字典项目启动于2008年金融危期间。',
+        answer: false,
+        explanation: '教材P2：链家在2007年底着手开发楼盘字典项目'
+    },
+    {
+        id: 29,
+        type: 'single',
+        question: '贝壳对运营团队的职业要求是？',
+        options: [
+            'A. 十不准',
+            'B. 十二不准',
+            'C. 十五不准',
+            'D. 二十不准'
+        ],
+        answer: 'B',
+        explanation: '教材P5：贝壳对运营团队有"十二不准"的行为准则'
+    },
+    {
+        id: 30,
+        type: 'multi',
+        question: '品质重塑围绕的三大方向是？',
+        options: [
+            'A. 建立标准化',
+            'B. 推动线上化',
+            'C. 实现数据化',
+            'D. 扩大规模化'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P3：品质重塑围绕"标准化、线上化、数据化"三方面'
+    },
+    {
+        id: 31,
+        type: 'single',
+        question: '赢亲情活动表彰的优秀服务者数量是？',
+        options: [
+            'A. 1000位',
+            'B. 2000位',
+            'C. 3000位',
+            'D. 5000位'
+        ],
+        answer: 'B',
+        explanation: '教材P6：2024年赢亲情活动表彰2000位优秀服务者'
+    },
+    {
+        id: 32,
+        type: 'judge',
+        question: 'ACN合作网络雏形源于2015年管理合作单边比变革。',
+        answer: true,
+        explanation: '教材P4：2015年链家进行管理合作单边比变革（即ACN雏形）'
+    },
+    {
+        id: 33,
+        type: 'single',
+        question: '贝壳找房在港交所上市的时间是？',
+        options: [
+            'A. 2018年',
+            'B. 2020年',
+            'C. 2021年',
+            'D. 2022年'
+        ],
+        answer: 'D',
+        explanation: '教材P4：2022年贝壳找房在香港港交所上市'
+    },
+    // 第21-50题
+    {
+        id: 34,
+        type: 'multi',
+        question: '科学管理阶段（2008-2010）的战略重点包括：',
+        options: [
+            'A. 提高店均效率',
+            'B. 提高人均效率',
+            'C. 解决内部管理语言一致性',
+            'D. 扩大市场份额'
+        ],
+        answer: ['A', 'B', 'C'],
+        explanation: '教材P2：此阶段战略重点是提高店均和人均效率，解决内部管理语言一致性问题'
+    },
+    {
+        id: 35,
+        type: 'single',
+        question: '链家在线启动品质正循环的核心是？',
+        options: [
+            'A. 低价策略',
+            'B. 真实信息展示',
+            'C. 快速响应',
+            'D. 广告投放'
+        ],
+        answer: 'B',
+        explanation: '教材P3：通过真实信息展示实现"有品质"，从而吸引消费者和经纪人'
+    },
+    {
+        id: 36,
+        type: 'judge',
+        question: '区域共治理事务是以平台管理员为主体的治理模式。',
+        answer: false,
+        explanation: '教材P4：区域共治理事务是以店东为主体、责任驱动为导向的新型治理模式'
+    },
+    {
+        id: 37,
+        type: 'single',
+        question: '门店星级评定周期是？',
+        options: [
+            'A. 每月',
+            'B. 每季度',
+            'C. 每半年',
+            'D. 每年'
+        ],
+        answer: 'B',
+        explanation: '教材P5：门店星级每季度结算一次'
+    },
+    {
+        id: 38,
+        type: 'multi',
+        question: '贝壳2024年公示的核心资源分配包括：',
+        options: [
+            'A. 新房商机',
+            'B. 二手商机',
+            'C. 租赁商机',
+            'D. 贝壳币'
+        ],
+        answer: ['A', 'B', 'C', 'D'],
+        explanation: '教材P5：公示新房、二手、租赁商机及贝壳币的分配结果'
+    },
+    {
+        id: 39,
+        type: 'single',
+        question: '精英社竞赛的主要评选标准是？',
+        options: [
+            'A. 门店规模',
+            'B. 门店业绩',
+            'C. 客户满意度',
+            'D. 人员数量'
+        ],
+        answer: 'B',
+        explanation: '教材P6：精英社以门店业绩为主要评选标准'
+    },
+
+        ];
+
+        // 当前考试相关数据
+        let currentUser = null;
+        let examQuestions = [];
+        let userAnswers = {};
+        let currentQuestionIndex = 0;
+        let timerInterval = null;
+        let timeLeft = 60 * 60; // 60分钟
+
+        // DOM 元素
+        const loginSection = document.getElementById('loginSection');
+        const examSection = document.getElementById('examSection');
+        const resultSection = document.getElementById('resultSection');
+        const questionArea = document.getElementById('questionArea');
+        const timer = document.getElementById('timer');
+        const userAvatar = document.getElementById('userAvatar');
+        const userName = document.getElementById('userName');
+        const progressBar = document.getElementById('progressBar');
+        const helpModal = document.getElementById('helpModal');
+        const closeHelp = document.getElementById('closeHelp');
+        const systemInfo = document.getElementById('systemInfo');
+
+        // 登录功能
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // 简单验证
+            if (username && password) {
+                // 演示用固定账号
+                if (username === 'syh' && password === '123') {
+                    currentUser = {
+                        name: username,
+                        avatar: username.charAt(0).toUpperCase()
+                    };
+                    
+                    // 更新用户信息
+                    userAvatar.textContent = currentUser.avatar;
+                    userName.textContent = currentUser.name;
+                    
+                    // 开始考试
+                    startExam();
+                } else {
+                    alert('用户名或密码错误！请使用演示账号: syh / 123');
+                }
+            } else {
+                alert('请输入用户名和密码');
+            }
+        });
+
+        // 开始考试
+        function startExam() {
+            // 隐藏系统信息卡片
+            systemInfo.style.display = 'none';
+            
+            // 切换界面
+            loginSection.classList.remove('active');
+            examSection.classList.add('active');
+            
+            // 生成试卷（按题型顺序：单选->多选->判断）
+            examQuestions = generateExamByType(35);
+            
+            // 初始化用户答案
+            userAnswers = {};
+            
+            // 显示第一题
+            currentQuestionIndex = 0;
+            displayQuestion(currentQuestionIndex);
+            
+            // 更新进度条
+            updateProgressBar();
+            
+            // 开始计时
+            startTimer();
+        }
+
+        // 按题型顺序生成试卷
+        function generateExamByType(num) {
+            // 按题型分组
+            const single = [];
+            const multi = [];
+            const judge = [];
+            
+            questionBank.forEach(q => {
+                if (q.type === 'single') single.push(q);
+                else if (q.type === 'multi') multi.push(q);
+                else if (q.type === 'judge') judge.push(q);
+            });
+            
+            // 对每个题型数组进行随机排序
+            shuffleArray(single);
+            shuffleArray(multi);
+            shuffleArray(judge);
+            
+            // 合并数组，顺序为：单选 -> 多选 -> 判断
+            const exam = [...single, ...multi, ...judge];
+            
+            // 如果题库总数不够num，则取全部，否则取前num题
+            return exam.slice(0, num);
+        }
+
+        // 数组随机排序
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // 更新进度条
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / examQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // 显示题目
+        function displayQuestion(index) {
+            if (index < 0 || index >= examQuestions.length) return;
+            
+            const question = examQuestions[index];
+            let optionsHtml = '';
+            
+            // 单选题和多选题
+            if (question.type === 'single' || question.type === 'multi') {
+                question.options.forEach((option, i) => {
+                    const optionLetter = option.charAt(0);
+                    const isSelected = userAnswers[question.id] && 
+                                      (question.type === 'single' ? 
+                                       userAnswers[question.id] === optionLetter : 
+                                       userAnswers[question.id].includes(optionLetter));
+                    
+                    optionsHtml += `
+                        <div class="option ${isSelected ? 'selected' : ''}" data-value="${optionLetter}">
+                            <input type="${question.type === 'single' ? 'radio' : 'checkbox'}" 
+                                   name="question_${question.id}" 
+                                   ${isSelected ? 'checked' : ''}
+                                   style="pointer-events: none;">
+                            ${option}
+                        </div>
+                    `;
+                });
+            } 
+            // 判断题
+            else if (question.type === 'judge') {
+                const isTrueSelected = userAnswers[question.id] === true;
+                const isFalseSelected = userAnswers[question.id] === false;
+                
+                optionsHtml += `
+                    <div class="option ${isTrueSelected ? 'selected' : ''}" data-value="true">
+                        <input type="radio" name="question_${question.id}" ${isTrueSelected ? 'checked' : ''} style="pointer-events: none;">
+                        正确
+                    </div>
+                    <div class="option ${isFalseSelected ? 'selected' : ''}" data-value="false">
+                        <input type="radio" name="question_${question.id}" ${isFalseSelected ? 'checked' : ''} style="pointer-events: none;">
+                        错误
+                    </div>
+                `;
+            }
+            
+            const questionHtml = `
+                <div class="question-container">
+                    <div class="question-header">
+                        <div class="question-number">${index + 1}</div>
+                        <div class="question-text">${question.question}</div>
+                    </div>
+                    <div class="options">${optionsHtml}</div>
+                </div>
+                <div class="navigation">
+                    <button class="nav-btn prev-btn" id="prevBtn" ${index === 0 ? 'disabled' : ''}>
+                        <i class="fas fa-arrow-left"></i> 上一题
+                    </button>
+                    <button class="nav-btn next-btn" id="nextBtn">
+                        ${index === examQuestions.length - 1 ? '完成预览' : '下一题'} <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            `;
+            
+            questionArea.innerHTML = questionHtml;
+            
+            // 添加选项选择事件
+            document.querySelectorAll('.option').forEach(option => {
+                option.addEventListener('click', function() {
+                    selectOption(question, this.dataset.value);
+                });
+            });
+            
+            // 添加上一题/下一题事件
+            document.getElementById('prevBtn').addEventListener('click', function() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    displayQuestion(currentQuestionIndex);
+                    updateProgressBar();
+                }
+            });
+            
+            document.getElementById('nextBtn').addEventListener('click', function() {
+                if (currentQuestionIndex < examQuestions.length - 1) {
+                    currentQuestionIndex++;
+                    displayQuestion(currentQuestionIndex);
+                    updateProgressBar();
+                } else {
+                    // 最后一题时显示提交确认
+                    if (confirm('您已完成所有题目，是否提交试卷？')) {
+                        submitExam();
+                    }
+                }
+            });
+        }
+
+        // 选择选项
+        function selectOption(question, value) {
+            if (question.type === 'single') {
+                userAnswers[question.id] = value;
+            } 
+            else if (question.type === 'multi') {
+                if (!userAnswers[question.id]) {
+                    userAnswers[question.id] = [];
+                }
+                
+                if (userAnswers[question.id].includes(value)) {
+                    // 已选中则取消
+                    userAnswers[question.id] = userAnswers[question.id].filter(v => v !== value);
+                } else {
+                    // 未选中则添加
+                    userAnswers[question.id].push(value);
+                }
+            } 
+            else if (question.type === 'judge') {
+                userAnswers[question.id] = value === 'true';
+            }
+            
+            // 重新渲染当前题目
+            displayQuestion(currentQuestionIndex);
+        }
+
+        // 开始计时
+        function startTimer() {
+            clearInterval(timerInterval);
+            
+            timerInterval = setInterval(function() {
+                timeLeft--;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                    return;
+                }
+                
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timer.textContent = `剩余时间: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // 提交试卷
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            if (confirm('确定要提交试卷吗？提交后将无法修改答案。')) {
+                submitExam();
+            }
+        });
+
+        // 提交考试
+        function submitExam() {
+            clearInterval(timerInterval);
+            
+            // 计算分数
+            const result = calculateScore();
+            
+            // 显示结果
+            showResult(result);
+        }
+
+        // 计算分数
+        function calculateScore() {
+            let correctCount = 0;
+            const wrongQuestions = [];
+            
+            examQuestions.forEach(question => {
+                const userAnswer = userAnswers[question.id];
+                let isCorrect = false;
+                
+                if (question.type === 'single') {
+                    isCorrect = userAnswer === question.answer;
+                } 
+                else if (question.type === 'multi') {
+                    // 多选题需要检查答案是否完全匹配
+                    if (Array.isArray(userAnswer)) {
+                        const sortedUser = [...userAnswer].sort().join('');
+                        const sortedAnswer = [...question.answer].sort().join('');
+                        isCorrect = sortedUser === sortedAnswer;
+                    }
+                } 
+                else if (question.type === 'judge') {
+                    isCorrect = userAnswer === question.answer;
+                }
+                
+                if (isCorrect) {
+                    correctCount++;
+                } else {
+                    wrongQuestions.push({
+                        question: question,
+                        userAnswer: userAnswer
+                    });
+                }
+            });
+            
+            const score = Math.round((correctCount / examQuestions.length) * 100);
+            
+            return {
+                total: examQuestions.length,
+                correct: correctCount,
+                wrong: examQuestions.length - correctCount,
+                score: score,
+                wrongQuestions: wrongQuestions
+            };
+        }
+
+        // 显示结果
+        function showResult(result) {
+            examSection.classList.remove('active');
+            resultSection.classList.add('active');
+            
+            // 更新结果数据
+            document.getElementById('scoreValue').textContent = result.score;
+            document.getElementById('totalQuestions').textContent = result.total;
+            document.getElementById('correctCount').textContent = result.correct;
+            document.getElementById('wrongCount').textContent = result.wrong;
+            
+            // 显示错题
+            const wrongQuestionsList = document.getElementById('wrongQuestionsList');
+            wrongQuestionsList.innerHTML = '';
+            
+            result.wrongQuestions.forEach((item, index) => {
+                const question = item.question;
+                const userAnswer = item.userAnswer;
+                
+                let correctAnswer = '';
+                if (question.type === 'single') {
+                    correctAnswer = question.answer;
+                } 
+                else if (question.type === 'multi') {
+                    correctAnswer = question.answer.join(', ');
+                } 
+                else if (question.type === 'judge') {
+                    correctAnswer = question.answer ? '正确' : '错误';
+                }
+                
+                let userAnswerDisplay = '';
+                if (userAnswer === undefined || userAnswer === null) {
+                    userAnswerDisplay = '未作答';
+                } else if (typeof userAnswer === 'boolean') {
+                    userAnswerDisplay = userAnswer ? '正确' : '错误';
+                } else if (Array.isArray(userAnswer)) {
+                    userAnswerDisplay = userAnswer.join(', ');
+                } else {
+                    userAnswerDisplay = userAnswer;
+                }
+                
+                const questionHtml = `
+                    <div class="wrong-question-item">
+                        <div class="question-text">
+                            ${index + 1}. ${question.question}
+                        </div>
+                        <div class="user-answer">
+                            <i class="fas fa-times"></i> 您的答案: ${userAnswerDisplay}
+                        </div>
+                        <div class="correct-answer">
+                            <i class="fas fa-check"></i> 正确答案: ${correctAnswer}
+                        </div>
+                        <div class="explanation">
+                            <strong>解析:</strong> ${question.explanation}
+                        </div>
+                    </div>
+                `;
+                
+                wrongQuestionsList.innerHTML += questionHtml;
+            });
+            
+            // 重新考试按钮
+            document.getElementById('retryBtn').addEventListener('click', function() {
+                // 重置考试数据
+                timeLeft = 60 * 60;
+                resultSection.classList.remove('active');
+                startExam();
+            });
+        }
+        
+        // 使用帮助功能
+        window.addEventListener('click', function(event) {
+            if (event.target === helpModal) {
+                helpModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
