@@ -7888,25 +7888,25 @@
         }
 
 
-        // 完全随机顺序生成试卷
-        function generateExampleType(num) {
-            // 创建所有题目的副本
-            const allQuestions = [...questionBank];
-            
-            // 对整个题库进行随机排序
-            shuffleArray(allQuestions);
-            
-            // 如果题库总数不够num，则取全部，否则取前num题
-            return allQuestions.slice(0, num);
-        }
+       // 完全随机顺序生成试卷
+function generateExampleType(num) {
+    // 创建所有题目的副本
+    const allQuestions = [...questionBank];
+    
+    // 对整个题库进行随机排序
+    shuffleArray(allQuestions);
+    
+    // 如果题库总数不够num，则取全部，否则取前num题
+    return allQuestions.slice(0, num);
+}
 
-        // 数组随机排序
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
+// 数组随机排序
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
         // 更新进度条
         function updateProgressBar() {
