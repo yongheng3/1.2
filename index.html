@@ -7889,15 +7889,15 @@
 
 
        // 完全随机顺序生成试卷
-function generateExampleType(num) {
-    // 创建所有题目的副本
-    const allQuestions = [...questionBank];
+       function generateExampleType(type) {
+         // 创建所有题目的副本
+         const allQuestions = [...questionBank];
     
-    // 对整个题库进行随机排序
-    shuffleArray(allQuestions);
+         // 对整个题库进行随机排序
+        shuffleArray(allQuestions);
     
-    // 如果题库总数不够num，则取全部，否则取前num题
-    return allQuestions.slice(0, num);
+      // 如果题库总数不够num，则取全部，否则取前num题
+      return allQuestions.slice(0, num);
 }
 
 // 数组随机排序
